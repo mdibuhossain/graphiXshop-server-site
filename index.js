@@ -17,6 +17,7 @@ async function run() {
         await client.connect();
         const database = client.db('graphiXshop');
         const productsCollection = database.collection('products');
+        const reviewsCollection = database.collection('reviews');
 
         // get products with limit
         app.get('/limit_products', async (req, res) => {
@@ -29,6 +30,13 @@ async function run() {
         // get All products
         app.get('/products', async (req, res) => {
             const cursor = productsCollection.find({});
+            const result = await cursor.toArray();
+            res.json(result);
+        })
+
+        // get All reviews
+        app.get('/reviews', async(req, res)=>{
+            const cursor = reviewsCollection.find({});
             const result = await cursor.toArray();
             res.json(result);
         })
