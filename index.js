@@ -18,6 +18,7 @@ async function run() {
         const database = client.db('graphiXshop');
         const productsCollection = database.collection('products');
         const reviewsCollection = database.collection('reviews');
+        const orderCollection = database.collection('orders');
         const usersCollection = database.collection('users');
 
         // get products with limit
@@ -46,6 +47,20 @@ async function run() {
         app.post('/users', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
+            res.json(result);
+        })
+
+        // Add orders
+        app.post('/orders', async (req, res) => {
+            const order = req.body;
+            const result = await orderCollection.insertOne(order);
+            res.json(result);
+        })
+
+        // add review
+        app.post('/reviews', async (req, res) => {
+            const review = req.body;
+            const result = await reviewsCollection.insertOne(review);
             res.json(result);
         })
 
