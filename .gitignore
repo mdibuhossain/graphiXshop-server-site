@@ -1,4 +1,6 @@
 /node_modules
 
+graphiXshop-firebase-adminsdk.json
+
 .env
 .env.local
