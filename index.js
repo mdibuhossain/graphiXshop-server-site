@@ -54,6 +54,12 @@ async function run() {
             }
         })
 
+        app.get('/allorders', async (req, res) => {
+            const cursor = orderCollection.find({});
+            const result = await cursor.toArray();
+            res.json(result);
+        })
+
         // get products with limit
         app.get('/limit_products', async (req, res) => {
             const limit = 6;
@@ -102,6 +108,13 @@ async function run() {
             res.json(result);
         })
 
+        // add product
+        app.post('/products', async (req, res) => {
+            const product = req.body;
+            const result = await productsCollection.insertOne(product);
+            res.json(result);
+        })
+
         // add review
         app.post('/reviews', async (req, res) => {
             const review = req.body;
@@ -115,6 +128,23 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await orderCollection.deleteOne(query);
             console.log('delete order', result);
+            res.json(result);
+        })
+
+        // delete product
+        app.delete('/products/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await productsCollection.deleteOne(query);
+            res.json(result);
+        })
+
+        // update order status
+        app.put('/order/status/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const updateDoc = { $set: { status: 'shipped' } };
+            const result = await orderCollection.updateOne(filter, updateDoc);
             res.json(result);
         })
 
