@@ -4,6 +4,7 @@ const { MongoClient } = require('mongodb');
 const ObjectId = require('mongodb').ObjectId;
 require('dotenv').config();
 const admin = require("firebase-admin");
+const fileupload = require('express-fileupload');
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 
 const app = express();
@@ -15,6 +16,7 @@ admin.initializeApp({
 // MiddleWare
 app.use(cors());
 app.use(express.json());
+app.use(fileupload());
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.5p7yt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -110,7 +112,20 @@ async function run() {
 
         // add product
         app.post('/products', async (req, res) => {
-            const product = req.body;
+            const name = req.body.name;
+            const price = req.body.price;
+            const description = req.body.description;
+            const pic = req.files.img;
+            const picData = pic.data;
+            const encodeImg = picData.toString('base64');
+            const imgBuffer = Buffer.from(encodeImg, 'base64');
+            const product = {
+                name,
+                price,
+                description,
+                img: imgBuffer
+            }
+            // console.log(product);
             const result = await productsCollection.insertOne(product);
             res.json(result);
         })
@@ -138,7 +153,7 @@ async function run() {
             const result = await productsCollection.deleteOne(query);
             res.json(result);
         })
- 
+
         // update order status
         app.put('/order/status/:id', async (req, res) => {
             const id = req.params.id;
