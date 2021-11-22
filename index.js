@@ -138,7 +138,7 @@ async function run() {
             const result = await productsCollection.deleteOne(query);
             res.json(result);
         })
-
+ 
         // update order status
         app.put('/order/status/:id', async (req, res) => {
             const id = req.params.id;
