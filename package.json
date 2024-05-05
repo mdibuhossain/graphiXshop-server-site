@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "start-dev": "nodemon index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -18,5 +18,8 @@
     "express-fileupload": "^1.2.1",
     "firebase-admin": "^10.0.0",
     "mongodb": "^4.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }
