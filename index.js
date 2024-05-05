@@ -113,21 +113,22 @@ async function run() {
 
         // add product
         app.post('/products', async (req, res) => {
-            const name = req.body.name;
-            const price = req.body.price;
-            const description = req.body.description;
-            const pic = req.files.img;
-            const picData = pic.data;
-            const encodeImg = picData.toString('base64');
-            const imgBuffer = Buffer.from(encodeImg, 'base64');
-            const product = {
-                name,
-                price,
-                description,
-                img: imgBuffer
-            }
+            console.log(req.files);
+            // const name = req.body.name;
+            // const price = req.body.price;
+            // const description = req.body.description;
+            // const pic = req.files.img;
+            // const picData = pic.data;
+            // const encodeImg = picData.toString('base64');
+            // const imgBuffer = Buffer.from(encodeImg, 'base64');
+            // const product = {
+            //     name,
+            //     price,
+            //     description,
+            //     img: imgBuffer
+            // }
             // console.log(product);
-            const result = await productsCollection.insertOne(product);
+            const result = await productsCollection.insertOne({});
             res.json(result);
         })
 
