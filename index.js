@@ -113,22 +113,35 @@ async function run() {
 
         // add product
         app.post('/products', async (req, res) => {
-            console.log(req.files);
-            // const name = req.body.name;
-            // const price = req.body.price;
-            // const description = req.body.description;
-            // const pic = req.files.img;
-            // const picData = pic.data;
-            // const encodeImg = picData.toString('base64');
-            // const imgBuffer = Buffer.from(encodeImg, 'base64');
-            // const product = {
-            //     name,
-            //     price,
-            //     description,
-            //     img: imgBuffer
-            // }
-            // console.log(product);
-            const result = await productsCollection.insertOne({});
+
+            const imgs = [];
+            const images = req.files;
+
+            for (const key in images) {
+                const img = images[key];
+                const imgData = img.data;
+                const encodeImg = imgData.toString('base64');
+                const imgBuffer = Buffer.from(encodeImg, 'base64');
+                imgs.push(imgBuffer);
+            }
+
+            const product = {
+                name: req.body.name,
+                model: req.body.model,
+                mileage: req.body.mileage,
+                fuelType: req.body.fuelType,
+                registration: req.body.registration,
+                seats: req.body.seats,
+                interior: req.body.interior,
+                brand: req.body.brand,
+                color: req.body.color,
+                condition: req.body.condition,
+                rimSize: req.body.rimSize,
+                price: req.body.price,
+                imgs
+            }
+            console.log(product);
+            const result = await productsCollection.insertOne(product);
             res.json(result);
         })
 
